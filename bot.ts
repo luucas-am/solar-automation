@@ -22,6 +22,8 @@ async function startUp() {
 
   await page.waitForSelector("span:text('Modo de Trabalho do Sistema-1')", { timeout: 0 });
   await page.locator('div').filter({ hasText: /^Modo de Trabalho do Sistema-1$/ }).locator('span').getByText('Modo de Trabalho do Sistema-1').click();
+  
+  await page.locator('button').filter({ hasText: /^Ler$/ }).locator('span').getByText('Ler').click();
 
   console.log('Bot started successfully');
   return { page };
@@ -38,17 +40,16 @@ cron.schedule("* 7 * * *", async () => {
     await page.keyboard.press('Enter');
   });
 
-  await page.locator('button').filter({ hasText: /^Ler$/ }).locator('span').getByText('Ler').click();
-  await page.waitForTimeout(10000);
   await page.locator('button').filter({ hasText: /^Configurar$/ }).locator('span').getByText('Configurar').click();
 });
 
 cron.schedule("* 18 * * *", async () => {
+  await page.locator('button').filter({ hasText: /^Ler$/ }).locator('span').getByText('Ler').click();
+  await page.waitForTimeout(10000);
+
   await page.fill("#form_item_00F4", "Grid vendendo primeiro").then(async () => {
     await page.keyboard.press('Enter');
   });
 
-  await page.locator('button').filter({ hasText: /^Ler$/ }).locator('span').getByText('Ler').click();
-  await page.waitForTimeout(10000);
   await page.locator('button').filter({ hasText: /^Configurar$/ }).locator('span').getByText('Configurar').click();
 });
