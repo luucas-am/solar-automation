@@ -1,6 +1,7 @@
 import { chromium } from 'playwright';
 import * as dotenv from 'dotenv';
 import cron from 'node-cron';
+import { expect } from 'playwright/test';
 
 dotenv.config();
 
@@ -41,15 +42,18 @@ cron.schedule("* 7 * * *", async () => {
   });
 
   await page.locator('button').filter({ hasText: /^Configurar$/ }).locator('span').getByText('Configurar').click();
+  const readButton = await page.locator('button').filter({ hasText: /^Ler$/ }).locator('span').getByText('Ler');
+  await expect(readButton).toBeEnabled({ timeout: 15000 });
+  await readButton.click();
 });
 
 cron.schedule("* 18 * * *", async () => {
-  await page.locator('button').filter({ hasText: /^Ler$/ }).locator('span').getByText('Ler').click();
-  await page.waitForTimeout(10000);
-
   await page.fill("#form_item_00F4", "Grid vendendo primeiro").then(async () => {
     await page.keyboard.press('Enter');
   });
 
   await page.locator('button').filter({ hasText: /^Configurar$/ }).locator('span').getByText('Configurar').click();
+  const readButton = await page.locator('button').filter({ hasText: /^Ler$/ }).locator('span').getByText('Ler');
+  await expect(readButton).toBeEnabled({ timeout: 15000 });
+  await readButton.click();
 });
